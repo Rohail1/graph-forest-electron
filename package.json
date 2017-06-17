@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "A graph-forest is a project which parses Excel files and turn the data into graphs ",
   "main": "main.js",
-  "dependencies": {},
+  "dependencies": {
+    "crossfilter2": "^1.4.0",
+    "d3": "^3.0.1"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

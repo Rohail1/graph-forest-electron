@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph</title>
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/dc.min.css">
+    <script src="../scripts/crossfilter.js"></script>
+    <script src="../scripts/dc.min.js"></script>
+
+    <style>
+        .barChartGraph {
+            height: 390px;
+            margin-bottom: 50px;
+        }
+        .paddingClass {
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="jumbotron">
+    <h1>Graph-Forest</h1>
+    <p>Upload your CSV file and Using Crossfilter we can manupilate Data and show it in graphs</p>
+</div>
+    <div id="skillSetDiv">
+        <h1 class="h3">Skill Sets</h1>
+    </div>
+
+<div id="container">
+
+    <div id="totalExpContainer" style="height: 480px;margin-bottom: 50px;">
+        <h1>Total Experience </h1>
+        <div  id="totalExpPie">
+            <div class="reset" >selected: <span class="filter"></span>
+                <a href="javascript:totalExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+            </div>
+        </div>
+    </div>
+    <div style="height: 480px;margin-bottom: 50px;">
+        <br/>
+        <h1>Venture Dive Experience </h1>
+        <div  id="VdExpPie">
+            <div class="reset" >selected: <span class="filter"></span>
+                <a href="javascript:vdExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 150px;">
+        <h1> Employee Table</h1>
+        <div class="table" id="table"></div>
+    </div>
+</div>
+</body>
+<script>
+  const dc = require('dc');
+  const ipc = require('electron').ipcRenderer;
+  const crossFilterClass = require('../scripts/initGraphs');
+  let totalExpChart;
+  let vdExpChart;
+  let table;
+  let graphs;
+  ipc.on('graphData', function (event,data) {
+    crossFilterClass.initializeCrossFilter(data);
+    graphs = require('../scripts/createButtons')(data,document.getElementById('skillSetDiv'));
+    totalExpChart = crossFilterClass.initializePieChart('totalExpPie','totalExp');
+    vdExpChart = crossFilterClass.initializePieChart('VdExpPie','totalVdExp');
+    table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','dob','University','totalExp'],'Name');
+
+  });
+</script>
+</html>
