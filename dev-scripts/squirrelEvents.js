@@ -54,7 +54,7 @@ module.exports = function (app) {
       // Remove desktop and start menu shortcuts
       spawnUpdate(['--removeShortcut', exeName]);
 
-      setTimeout(application.quit, 1000);
+      setTimeout(app.quit, 1000);
       return true;
 
     case '--squirrel-obsolete':

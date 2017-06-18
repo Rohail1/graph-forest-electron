@@ -13,12 +13,13 @@
   "devDependencies": {
     "electron-packager": "^8.7.1",
     "electron-squirrel-startup": "^1.0.0",
-    "electron-windows-installer": "^1.4.4"
+    "electron-winstaller": "^2.6.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build-win": "electron-packager . --out=build --overwrite --electron-version=1.6.11 --asar --icon=app/images/vdlogo.ico"
+    "build-win": "electron-packager . --out=build --overwrite --electron-version=1.6.11 --version-string.ProductName=\"Graph-forest\" --icon=app/images/vdlogo.ico",
+    "win-installer": "node ./dev-scripts/win-installer.js"
   },
   "repository": {
     "type": "git",
