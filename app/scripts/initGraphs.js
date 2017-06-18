@@ -23,7 +23,7 @@ const initializePieChart = (id,dimension) => {
   let chartDimension = ndx.dimension(function(d) { return d[dimension]});
   let group = chartDimension.group().reduceCount(function(d) {return d[dimension];});
   pieChart
-    .width(768)
+    .width(600)
     .height(480)
     .slicesCap(20)
     .innerRadius(50)
@@ -33,7 +33,8 @@ const initializePieChart = (id,dimension) => {
     // workaround for #703: not enough data is accessible through .label() to display percentages
     .on('pretransition', function(chart) {
       chart.selectAll('text.pie-slice').text(function(d) {
-        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+        return d.data.key + ' ';
+        //+ dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%'
       })
     });
 
@@ -74,8 +75,12 @@ module.exports = {
 function addGraph(id){
   // block div
   let div = document.createElement("div");
+  let row = document.createElement("div");
+  let column = document.createElement("div");
   div.className   = "barChartGraph";
-
+  column.className   = "col-md-12 col-md-offset-2";
+  row.className   = "row";
+  row.appendChild(column);
   // graph div
   let graphdiv = document.createElement("div");
   graphdiv.id  = id+'Graph';
@@ -96,13 +101,14 @@ function addGraph(id){
 
   // heading
   let h1 = document.createElement("h1");
-  h1.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level"
+  h1.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level";
   div.appendChild(h1);
   div.appendChild(graphdiv);
   // container dive :D
-  document.getElementById("container").insertBefore(div,document.getElementById("totalExpContainer"));
+  column.appendChild(div);
+  document.getElementById("container").insertBefore(row,document.getElementById('tableRow'));
   CreateGraph(id);
-  achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();"
+  achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();";
   return graphs;
 }
 
@@ -110,7 +116,7 @@ function CreateGraph(id){
   graphs[id] = dc.barChart('#'+id+"Graph");
   dimensions[id] = ndx.dimension(function(d) { return d[id]; });
   groups[id] = dimensions[id].group().reduceCount(function (d) {return d[id];});
-  graphs[id].width(500)
+  graphs[id].width(800)
     .height(380)
     .x(d3.scale.ordinal())
     .xUnits(dc.units.ordinal)

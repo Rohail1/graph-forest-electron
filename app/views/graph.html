@@ -18,7 +18,7 @@
 
 </head>
 <body>
-<div class="container">
+<div class="container" id="container">
     <div class="row">
         <div class="col-md-12">
             <div class="jumbotron">
@@ -36,33 +36,43 @@
             </div>
         </div>
     </div>
-</div>
-    <div id="skillSetDiv">
-        <h1 class="h3">Skill Sets</h1>
-    </div>
-
-<div id="container">
-
-    <div id="totalExpContainer" style="height: 480px;margin-bottom: 50px;">
-        <h1>Total Experience </h1>
-        <div  id="totalExpPie">
-            <div class="reset" >selected: <span class="filter"></span>
-                <a href="javascript:totalExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="skillSetDiv">
+                <h1 class="h3">Skill Sets</h1>
             </div>
         </div>
     </div>
-    <div style="height: 480px;margin-bottom: 50px;">
-        <br/>
-        <h1>Venture Dive Experience </h1>
-        <div  id="VdExpPie">
-            <div class="reset" >selected: <span class="filter"></span>
-                <a href="javascript:vdExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="totalExpContainer" style="height: 480px;margin-bottom: 50px;">
+                <h1>Total Experience </h1>
+                <div  id="totalExpPie">
+                    <div class="reset" >selected: <span class="filter"></span>
+                        <a href="javascript:totalExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="height: 480px;margin-bottom: 50px;">
+                <br/>
+                <h1>Venture Dive Experience </h1>
+                <div  id="VdExpPie">
+                    <div class="reset" >selected: <span class="filter"></span>
+                        <a href="javascript:vdExpChart.pieChart.filterAll();dc.redrawAll();">reset</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div style="margin-top: 150px;">
-        <h1> Employee Table</h1>
-        <div class="table" id="table"></div>
+    <div class="row" id="tableRow">
+        <div class="col-md-12 col-md-offset-1">
+            <div style="margin-top: 150px;">
+                <h1> Employee Table</h1>
+                <div class="table" id="table"></div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
