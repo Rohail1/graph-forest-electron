@@ -2,13 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/styles/styles.css">
     <title>Home</title>
 </head>
 <body>
-    <button id="fileClicker">openFile</button>
-    <p id="selected-file"></p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <a href="#" class="thumbnail" >
+                    <img src="app/images/venturedive.png" />
+                </a>
+                <h2 class="text-center employeeColor" >Employee Skill Metrics</h2>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <p class="text-center">Please Upload the CVS file to view employee graph</p>
+                            <p class="text-center"><button id="fileClicker" class="btn btn-form btn-primary">open file</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
-    require('./app/renderers/openfile')
+  require('./app/renderers/openfile')
 </script>
 </html>

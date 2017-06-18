@@ -8,7 +8,7 @@ const csvParser = require('csvtojson');
 const selectDirBtn = document.getElementById('fileClicker');
 
 selectDirBtn.addEventListener('click', function (event) {
-  ipc.send('open-file-dialog',"hello")
+  ipc.send('open-file-dialog')
 });
 let data = [];
 ipc.on('selected-directory', function (event, path) {

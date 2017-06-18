@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Graph</title>
-    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../styles/dc.min.css">
-
+    <link rel="stylesheet" href="../styles/styles.css">
     <style>
         .barChartGraph {
             height: 390px;
@@ -15,11 +15,27 @@
             margin: 2px;
         }
     </style>
+
 </head>
 <body>
-<div class="jumbotron">
-    <h1>Graph-Forest</h1>
-    <p>Upload your CSV file and Using Crossfilter we can manupilate Data and show it in graphs</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <a href="#" class="thumbnail" id="homelogo">
+                    <img src="../images/venturedive.png" />
+                </a>
+                <h2 class="text-center employeeColor" >Employee Skill Metrics</h2>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <p class="text-center"><button id="homebtn" class="btn btn-form btn-primary">Home</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
     <div id="skillSetDiv">
         <h1 class="h3">Skill Sets</h1>
@@ -50,34 +66,5 @@
     </div>
 </div>
 </body>
-<script>
-  const dc = require('dc');
-  const ipc = require('electron').ipcRenderer;
-  const crossFilterClass = require('../scripts/initGraphs');
-  let totalExpChart;
-  let vdExpChart;
-  let table;
-  let graphs;
-  ipc.on('graphData', function (event,data) {
-    crossFilterClass.initializeCrossFilter(data);
-    Object.keys(data.reduce(function (a, b) { return Object.keys(a).length > Object.keys(b).length ? a : b; }))
-      .forEach(props =>{
-
-        function eventMethod () {
-          graphs = require('../scripts/initGraphs').addGraph(props)
-        }
-
-        let button = document.createElement("button");
-        button.id = props;
-        button.innerHTML = props;
-        button.className   = "btn btn-primary paddingClass";
-        button.onclick = eventMethod;  //require('../scripts/initGraphs').addGraph;
-        document.getElementById('skillSetDiv').appendChild(button);
-      });
-    totalExpChart = crossFilterClass.initializePieChart('totalExpPie','totalExp');
-    vdExpChart = crossFilterClass.initializePieChart('VdExpPie','totalVdExp');
-    table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','dob','University','totalExp'],'Name');
-
-  });
-</script>
+<script src="../scripts/graphs.js"></script>
 </html>
