@@ -15,6 +15,11 @@ ipc.on('selected-directory', function (event, path) {
   csvParser()
     .fromFile(path[0])
     .on('json',(jsonObj)=>{
+      for(let prop in jsonObj){
+        if(jsonObj.hasOwnProperty(prop))
+          if(jsonObj[prop] === "")
+            jsonObj[prop] = "None"
+      }
       data.push(jsonObj);
     })
     .on('done',async (error)=>{
