@@ -5,9 +5,13 @@
   "main": "main.js",
   "dependencies": {
     "crossfilter2": "^1.4.0",
-    "d3": "^3.0.1"
+    "csvtojson": "^1.1.6",
+    "d3": "^3.0.1",
+    "dc": "^2.1.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron-packager": "^8.7.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
