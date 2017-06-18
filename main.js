@@ -2,7 +2,12 @@
  * Created by Rohail on 6/17/2017.
  */
 
+const handleSquirrelEvent = require('./dev-scripts/squirrelEvents');
 const {app, BrowserWindow} = require('electron');
+if (handleSquirrelEvent(app)) {
+  // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  return;
+}
 const ipc = require('electron').ipcMain;
 const dialog = require('electron').dialog;
 
@@ -67,6 +72,16 @@ ipc.on('home-screen', function (event) {
     protocol: 'file:',
     slashes: true
   }));
+});
+ipc.on('refresh-screen', function (event,data) {
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, '/app/views/graph.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('graphData',data)
+  })
 });
 
 ipc.on('csvParsed', function (event,data) {

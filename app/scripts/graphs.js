@@ -6,26 +6,32 @@ const dc = require('dc');
 const ipc = require('electron').ipcRenderer;
 const crossFilterClass = require('../scripts/initGraphs');
 const homeBtn = document.getElementById('homebtn');
+const homeLogo = document.getElementById('homelogo');
+const refreshBtn = document.getElementById('refresh');
 
 
+let graphData;
 let totalExpChart;
 let vdExpChart;
 let table;
 let graphs;
 
-const propsToRemove  = ['Name','dob','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID'];
+const propsToRemove  = ['Name','dob','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
 
 homeBtn.addEventListener('click', function (event) {
   ipc.send('home-screen')
 });
+refreshBtn.addEventListener('click', function (event) {
+  ipc.send('refresh-screen',graphData)
+});
 
-const homeLogo = document.getElementById('homelogo');
 
 homeLogo.addEventListener('click', function (event) {
   ipc.send('home-screen')
 });
 
 ipc.on('graphData', function (event,data) {
+  graphData = data;
   crossFilterClass.initializeCrossFilter(data);
   Object.keys(data.reduce(function (a, b) { return Object.keys(a).length > Object.keys(b).length ? a : b; }))
     .filter(function (element) {
