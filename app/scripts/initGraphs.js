@@ -74,6 +74,8 @@ module.exports = {
 
 function addGraph(id){
   // block div
+  if(graphs[id])
+    return graphs;
   let div = document.createElement("div");
   let row = document.createElement("div");
   let column = document.createElement("div");
