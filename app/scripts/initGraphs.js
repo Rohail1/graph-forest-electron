@@ -30,13 +30,6 @@ const initializePieChart = (id,dimension) => {
     .dimension(chartDimension)
     .group(group)
     .legend(dc.legend());
-    // workaround for #703: not enough data is accessible through .label() to display percentages
-    // .on('pretransition', function(chart) {
-    //   chart.selectAll('text.pie-slice').text(function(d) {
-    //     return d.data.key + ' ';
-    //     //+ dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%'
-    //   })
-    // });
 
   dc.renderAll();
   return {
@@ -79,7 +72,7 @@ function addGraph(id){
   let row = document.createElement("div");
   let column = document.createElement("div");
   div.className   = "barChartGraph";
-  column.className   = "col-md-12 col-md-offset-2";
+  column.className   = "col-md-5";
   row.className   = "row";
   row.appendChild(column);
   // graph div
@@ -107,7 +100,8 @@ function addGraph(id){
   div.appendChild(graphdiv);
   // container dive :D
   column.appendChild(div);
-  document.getElementById("container").insertBefore(row,document.getElementById('tableRow'));
+  // document.getElementById("container").insertBefore(row,document.getElementById('tableRow'));
+  document.getElementById("graphContainer").appendChild(column);
   CreateGraph(id);
   achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();";
   return graphs;
@@ -117,7 +111,7 @@ function CreateGraph(id){
   graphs[id] = dc.barChart('#'+id+"Graph");
   dimensions[id] = ndx.dimension(function(d) { return d[id]; });
   groups[id] = dimensions[id].group().reduceCount(function (d) {return d[id];});
-  graphs[id].width(800)
+  graphs[id].width(500)
     .height(380)
     .x(d3.scale.ordinal())
     .xUnits(dc.units.ordinal)
