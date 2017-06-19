@@ -16,7 +16,7 @@ let vdExpChart;
 let table;
 let graphs;
 
-const propsToRemove  = ['Name','dob','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
+const propsToRemove  = ['Name','dob','Email','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
 
 homeBtn.addEventListener('click', function (event) {
   ipc.send('home-screen')
