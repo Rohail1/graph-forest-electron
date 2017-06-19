@@ -26,17 +26,17 @@ const initializePieChart = (id,dimension) => {
     .width(600)
     .height(480)
     .slicesCap(20)
-    .innerRadius(50)
+    .innerRadius(60)
     .dimension(chartDimension)
     .group(group)
-    .legend(dc.legend())
+    .legend(dc.legend());
     // workaround for #703: not enough data is accessible through .label() to display percentages
-    .on('pretransition', function(chart) {
-      chart.selectAll('text.pie-slice').text(function(d) {
-        return d.data.key + ' ';
-        //+ dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%'
-      })
-    });
+    // .on('pretransition', function(chart) {
+    //   chart.selectAll('text.pie-slice').text(function(d) {
+    //     return d.data.key + ' ';
+    //     //+ dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%'
+    //   })
+    // });
 
   dc.renderAll();
   return {
@@ -45,7 +45,6 @@ const initializePieChart = (id,dimension) => {
     group
   };
 };
-
 
 const initializeTable = (id,dimension,columns,sortBy) => {
   let table = dc.dataTable('#'+id);

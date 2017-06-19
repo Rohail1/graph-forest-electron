@@ -6,7 +6,9 @@ const ipc = require('electron').ipcRenderer;
 const csvParser = require('csvtojson');
 
 const selectDirBtn = document.getElementById('fileClicker');
-
+const propsToSkip = ['Name','dob','Email','EmployeeID','Location',
+  'University','Qualification','graduationYear','Certifications','totalVdExp','totalExp','TimeStamp','Major','OtherTools'];
+const skillSetLevels = ['Beginner','Intermediate','Expert','None'];
 selectDirBtn.addEventListener('click', function (event) {
   ipc.send('open-file-dialog')
 });
@@ -17,8 +19,9 @@ ipc.on('selected-directory', function (event, path) {
     .on('json',(jsonObj)=>{
       for(let prop in jsonObj){
         if(jsonObj.hasOwnProperty(prop))
-          if(jsonObj[prop] === "")
-            jsonObj[prop] = "None"
+          if(!propsToSkip.includes(prop))
+            if(jsonObj[prop] === "" || !skillSetLevels.includes(jsonObj[prop]))
+              jsonObj[prop] = "None"
       }
       data.push(jsonObj);
     })
