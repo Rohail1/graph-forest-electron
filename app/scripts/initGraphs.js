@@ -72,7 +72,7 @@ function addGraph(id){
   let row = document.createElement("div");
   let column = document.createElement("div");
   div.className   = "barChartGraph";
-  column.className   = "col-md-5";
+  column.className   = "col-md-4";
   row.className   = "row";
   row.appendChild(column);
   // graph div
@@ -111,7 +111,7 @@ function CreateGraph(id){
   graphs[id] = dc.barChart('#'+id+"Graph");
   dimensions[id] = ndx.dimension(function(d) { return d[id]; });
   groups[id] = dimensions[id].group().reduceCount(function (d) {return d[id];});
-  graphs[id].width(500)
+  graphs[id].width(400)
     .height(380)
     .x(d3.scale.ordinal())
     .xUnits(dc.units.ordinal)
