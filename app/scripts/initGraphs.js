@@ -56,15 +56,7 @@ const initializeTable = (id,dimension,columns,sortBy) => {
   return table;
 };
 
-module.exports = {
-  addGraph,
-  initializeCrossFilter,
-  initializePieChart,
-  initializeTable
-};
-
-
-function addGraph(id){
+const addGraph = (id) =>{
   // block div
   if(graphs[id])
     return graphs;
@@ -105,9 +97,9 @@ function addGraph(id){
   CreateGraph(id);
   achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();";
   return graphs;
-}
+};
 
-function CreateGraph(id){
+const CreateGraph = (id) =>{
   graphs[id] = dc.barChart('#'+id+"Graph");
   dimensions[id] = ndx.dimension(function(d) { return d[id]; });
   groups[id] = dimensions[id].group().reduceCount(function (d) {return d[id];});
@@ -150,4 +142,11 @@ function CreateGraph(id){
 
   table.render();
 
-}
+};
+
+module.exports = {
+  addGraph,
+  initializeCrossFilter,
+  initializePieChart,
+  initializeTable
+};
