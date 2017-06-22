@@ -80,6 +80,6 @@ ipc.on('graphData', function (event,data) {
 ipc.on('saved-file', function (event, file) {
   if (!file.filename) console('No path');
   fs.writeFileSync(file.filename, file.xls, 'binary');
-  alert('file done');
+  alert('File Successfully saved !');
   console.log('ok',file);
 });
