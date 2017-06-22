@@ -19,7 +19,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build-win": "electron-packager . --out=build --overwrite --electron-version=1.6.11 --version-string.ProductName=\"Graph-forest\" --version-string.CompanyName=VentureDive --version-string.FileDescription=graph-forest --icon=app/images/vdlogo.ico",
+    "build-win": "electron-packager . --out=build --overwrite --electron-version=1.6.11 --asar --version-string.ProductName=\"Graph-forest\" --version-string.CompanyName=VentureDive --version-string.FileDescription=graph-forest --icon=app/images/vdlogo.ico",
     "win-installer": "node ./dev-scripts/win-installer.js"
   },
   "repository": {
