@@ -94,9 +94,9 @@ const addGraph = (id) =>{
   column.appendChild(div);
   // document.getElementById("container").insertBefore(row,document.getElementById('tableRow'));
   document.getElementById("graphContainer").appendChild(column);
-  CreateGraph(id);
+  let table  = CreateGraph(id);
   achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();";
-  return graphs;
+  return {graphs,table};
 };
 
 const CreateGraph = (id) =>{
@@ -141,7 +141,7 @@ const CreateGraph = (id) =>{
     .order(d3.ascending);
 
   table.render();
-
+  return table;
 };
 
 module.exports = {

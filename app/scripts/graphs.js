@@ -4,6 +4,8 @@
 
 const dc = require('dc');
 const ipc = require('electron').ipcRenderer;
+const json2xls = require('json2xls');
+const fs = require('fs');
 const crossFilterClass = require('../scripts/initGraphs');
 const homeBtn = document.getElementById('homebtn');
 const homeLogo = document.getElementById('homelogo');
@@ -39,7 +41,9 @@ ipc.on('graphData', function (event,data) {
     }).forEach(props =>{
 
     function eventMethod () {
-      graphs = require('../scripts/initGraphs').addGraph(props)
+      let graphObject = require('../scripts/initGraphs').addGraph(props);
+      graphs = graphObject.graphs;
+      table = graphObject.table;
     }
 
     let button = document.createElement("button");
@@ -52,5 +56,30 @@ ipc.on('graphData', function (event,data) {
   totalExpChart = crossFilterClass.initializePieChart('totalExpPie','totalExp');
   vdExpChart = crossFilterClass.initializePieChart('VdExpPie','totalVdExp');
   table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','dob','University','totalExp'],'Name');
-
+  d3.select('#download')
+    .on('click', function() {
+      let data = totalExpChart.chartDimension.top(Infinity);
+      data = data.sort(function(a, b) {
+        return table.order()(table.sortBy()(a), table.sortBy()(b));
+      });
+      data = data.map(function(d) {
+        let row = {};
+        table.columns().forEach(function(c) {
+          console.log('c',c);
+          row[table._doColumnHeaderFormat(c)] = table._doColumnValueFormat(c, d);
+        });
+        return row;
+      });
+      console.log('data ',data);
+      let xls = json2xls(data);
+      ipc.send('exportdata',xls)
+      // let blob = new Blob([d3.csv.format(data)], {type: "text/csv;charset=utf-8"});
+      // saveAs(blob, 'data.csv');
+    });
+});
+ipc.on('saved-file', function (event, file) {
+  if (!file.filename) console('No path');
+  fs.writeFileSync(file.filename, file.xls, 'binary');
+  alert('file done');
+  console.log('ok',file);
 });

@@ -83,7 +83,6 @@ ipc.on('refresh-screen', function (event,data) {
     win.webContents.send('graphData',data)
   })
 });
-
 ipc.on('csvParsed', function (event,data) {
   win.loadURL(url.format({
     pathname: path.join(__dirname, '/app/views/graph.html'),
@@ -92,6 +91,17 @@ ipc.on('csvParsed', function (event,data) {
   }));
   win.webContents.on('did-finish-load', () => {
     win.webContents.send('graphData',data)
+  })
+});
+ipc.on('exportdata', function (event,xls) {
+  const options = {
+    title: 'Export data to',
+    filters: [
+      { name: 'xlsx file', extensions: ['xlsx'] }
+    ]
+  };
+  dialog.showSaveDialog(options, function (filename) {
+    event.sender.send('saved-file', {filename,xls})
   })
 });
 
