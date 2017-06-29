@@ -127,7 +127,7 @@ const CreateGraph = (id) =>{
     };
     dynamicColumns.push(obj);
   }
-  let columnsArrays = ['Name','dob','University','totalExp',...dynamicColumns]
+  let columnsArrays = ['Name','University','totalExp',...dynamicColumns]
   let table = dc.dataTable('#table');
   table
     .dimension(dimensions[id])
