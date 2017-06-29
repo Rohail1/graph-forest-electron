@@ -55,7 +55,7 @@ ipc.on('graphData', function (event,data) {
   });
   totalExpChart = crossFilterClass.initializePieChart('totalExpPie','totalExp');
   vdExpChart = crossFilterClass.initializePieChart('VdExpPie','totalVdExp');
-  table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','dob','University','totalExp'],'Name');
+  table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','University','totalExp'],'Name');
   d3.select('#download')
     .on('click', function() {
       let data = totalExpChart.chartDimension.top(Infinity);
