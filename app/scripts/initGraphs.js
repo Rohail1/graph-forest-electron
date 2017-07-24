@@ -18,6 +18,10 @@ const initializeCrossFilter = (data) => {
   return ndx;
 };
 
+const initializeDimension = (key) => {
+  return ndx.dimension(function(d) { return d[key]})
+};
+
 const initializePieChart = (id,dimension) => {
   let pieChart  = dc.pieChart("#"+id);
   let chartDimension = ndx.dimension(function(d) { return d[dimension]});
@@ -39,7 +43,7 @@ const initializePieChart = (id,dimension) => {
   };
 };
 
-const initializeTable = (id,dimension,columns,sortBy) => {
+const initializeTable = (id,dimension,columns,sortBy,filter = null) => {
   let table = dc.dataTable('#'+id);
   // let columnsArrays = columns  // ['Name','dob','University','totalExp'];
   table
@@ -47,6 +51,7 @@ const initializeTable = (id,dimension,columns,sortBy) => {
     .group(function(d) {
       return d.value;
     })
+    .filter(filter)
     .sortBy(function(d) { return d[sortBy]; })
     .showGroups(false)
     .size(Infinity)
@@ -64,7 +69,7 @@ const addGraph = (id) =>{
   let row = document.createElement("div");
   let column = document.createElement("div");
   div.className   = "barChartGraph";
-  column.className   = "col-md-4";
+  column.className   = "col-lg-4";
   row.className   = "row";
   row.appendChild(column);
   // graph div
@@ -86,7 +91,7 @@ const addGraph = (id) =>{
   graphdiv.appendChild(resetDiv);
 
   // heading
-  let h1 = document.createElement("h1");
+  let h1 = document.createElement("h3");
   h1.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level";
   div.appendChild(h1);
   div.appendChild(graphdiv);
@@ -127,7 +132,7 @@ const CreateGraph = (id) =>{
     };
     dynamicColumns.push(obj);
   }
-  let columnsArrays = ['Name','University','totalExp',...dynamicColumns]
+  let columnsArrays = ['Name','University','totalExp',...dynamicColumns];
   let table = dc.dataTable('#table');
   table
     .dimension(dimensions[id])
@@ -147,6 +152,7 @@ const CreateGraph = (id) =>{
 module.exports = {
   addGraph,
   initializeCrossFilter,
+  initializeDimension,
   initializePieChart,
   initializeTable
 };

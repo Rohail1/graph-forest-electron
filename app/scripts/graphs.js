@@ -15,8 +15,11 @@ const refreshBtn = document.getElementById('refresh');
 let graphData;
 let totalExpChart;
 let vdExpChart;
+let employeeIdDimension;
 let table;
 let graphs;
+let $select;
+let selectize;
 
 const propsToRemove  = ['Name','dob','Email','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
 
@@ -55,7 +58,8 @@ ipc.on('graphData', function (event,data) {
   });
   totalExpChart = crossFilterClass.initializePieChart('totalExpPie','totalExp');
   vdExpChart = crossFilterClass.initializePieChart('VdExpPie','totalVdExp');
-  table = crossFilterClass.initializeTable('table',totalExpChart.chartDimension,['Name','University','totalExp'],'Name');
+  employeeIdDimension = crossFilterClass.initializeDimension('EmployeeID');
+  table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name');
   d3.select('#download')
     .on('click', function() {
       let data = totalExpChart.chartDimension.top(Infinity);
@@ -76,10 +80,36 @@ ipc.on('graphData', function (event,data) {
       // let blob = new Blob([d3.csv.format(data)], {type: "text/csv;charset=utf-8"});
       // saveAs(blob, 'data.csv');
     });
+  $select = $('#select-state').selectize({
+    options : data,
+    placeholder : 'Select an Employee',
+    labelField : 'Name',
+    valueField: 'EmployeeID',
+    searchField : 'Name',
+    sortField : 'Name',
+  });
+  selectize = $select[0].selectize;
+  selectize.on('change', onSelectizeChange);
 });
 ipc.on('saved-file', function (event, file) {
   if (!file.filename) console('No path');
   fs.writeFileSync(file.filename, file.xls, 'binary');
   alert('File Successfully saved !');
-  console.log('ok',file);
+});
+
+
+function onSelectizeChange(value) {
+  if(value === null){
+    employeeIdDimension.filterAll();
+    table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',null);
+  }
+  else{
+    table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',[value]);
+  }
+}
+
+$('#resetSearchBar').click(function (e) {
+  selectize.clear(true);
+  employeeIdDimension.filterAll();
+  table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',null);
 });
