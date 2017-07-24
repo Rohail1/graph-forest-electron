@@ -24,6 +24,7 @@ let selectize;
 const propsToRemove  = ['Name','dob','Email','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
 
 homeBtn.addEventListener('click', function (event) {
+  graphData = totalExpChart = vdExpChart = employeeIdDimension = table = graphs = $select = selectize = null;
   ipc.send('home-screen')
 });
 refreshBtn.addEventListener('click', function (event) {
@@ -32,11 +33,13 @@ refreshBtn.addEventListener('click', function (event) {
 
 
 homeLogo.addEventListener('click', function (event) {
+  graphData = totalExpChart = vdExpChart = employeeIdDimension = table = graphs = $select = selectize = null;
   ipc.send('home-screen')
 });
 
 ipc.on('graphData', function (event,data) {
   graphData = data;
+  $('#skillSetDiv').empty();
   crossFilterClass.initializeCrossFilter(data);
   Object.keys(data.reduce(function (a, b) { return Object.keys(a).length > Object.keys(b).length ? a : b; }))
     .filter(function (element) {

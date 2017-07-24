@@ -91,9 +91,9 @@ const addGraph = (id) =>{
   graphdiv.appendChild(resetDiv);
 
   // heading
-  let h1 = document.createElement("h3");
-  h1.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level";
-  div.appendChild(h1);
+  let h4 = document.createElement("h4");
+  h4.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level";
+  div.appendChild(h4);
   div.appendChild(graphdiv);
   // container dive :D
   column.appendChild(div);
