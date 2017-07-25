@@ -9,7 +9,7 @@ const dc = require('dc');
 let dimensions = {};
 let graphs = {};
 let groups = {};
-
+let table = null;
 let ndx = null;
 
 
@@ -44,8 +44,7 @@ const initializePieChart = (id,dimension) => {
 };
 
 const initializeTable = (id,dimension,columns,sortBy,filter = null) => {
-  let table = dc.dataTable('#'+id);
-  // let columnsArrays = columns  // ['Name','dob','University','totalExp'];
+  table = dc.dataTable('#'+id);
   table
     .dimension(dimension)
     .group(function(d) {
@@ -61,7 +60,7 @@ const initializeTable = (id,dimension,columns,sortBy,filter = null) => {
   return table;
 };
 
-const addGraph = (id) =>{
+const addGraph = (key,id) =>{
   // block div
   if(graphs[id])
     return graphs;
@@ -92,22 +91,22 @@ const addGraph = (id) =>{
 
   // heading
   let h4 = document.createElement("h4");
-  h4.innerHTML = (id.split('_')[1] ? id.split('_')[1] : id)  + " Skill Level";
+  h4.innerHTML = (key.split('_')[1] ? key.split('_')[1] : key)  + " Skill";
   div.appendChild(h4);
   div.appendChild(graphdiv);
   // container dive :D
   column.appendChild(div);
   // document.getElementById("container").insertBefore(row,document.getElementById('tableRow'));
   document.getElementById("graphContainer").appendChild(column);
-  let table  = CreateGraph(id);
+  let table  = CreateGraph(key,id);
   achor.href = "javascript:graphs['"+id+"'].filterAll();dc.redrawAll();";
   return {graphs,table};
 };
 
-const CreateGraph = (id) =>{
+const CreateGraph = (key,id) =>{
   graphs[id] = dc.barChart('#'+id+"Graph");
-  dimensions[id] = ndx.dimension(function(d) { return d[id]; });
-  groups[id] = dimensions[id].group().reduceCount(function (d) {return d[id];});
+  dimensions[id] = ndx.dimension(function(d) { return d[key]; });
+  groups[id] = dimensions[id].group().reduceCount(function (d) {return d[key];});
   graphs[id].width(400)
     .height(380)
     .x(d3.scale.ordinal())
@@ -121,19 +120,10 @@ const CreateGraph = (id) =>{
     .group(groups[id]);
   graphs[id].render();
 
-  let dynamicColumns = [];
-  for(let props in graphs){
-
-    let obj = {
-      label : (props.split('_')[1] ? props.split('_')[1] : props)   + " Skill ",
-      format: function(d) {
-        return d[props];
-      }
-    };
-    dynamicColumns.push(obj);
-  }
-  let columnsArrays = ['Name','University','totalExp',...dynamicColumns];
-  let table = dc.dataTable('#table');
+  let dynamicColumns = table.columns();
+  console.log('dynamicColumns',dynamicColumns);
+  dynamicColumns.push(key);
+  console.log('dynamicColumns after',dynamicColumns);
   table
     .dimension(dimensions[id])
     .group(function(d) {
@@ -142,7 +132,7 @@ const CreateGraph = (id) =>{
     .sortBy(function(d) { return d.Name; })
     .showGroups(false)
     .size(Infinity)
-    .columns(columnsArrays)
+    .columns(dynamicColumns)
     .order(d3.ascending);
 
   table.render();

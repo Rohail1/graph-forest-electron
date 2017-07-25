@@ -47,13 +47,13 @@ ipc.on('graphData', function (event,data) {
     }).forEach(props =>{
 
     function eventMethod () {
-      let graphObject = require('../scripts/initGraphs').addGraph(props);
+      let graphObject = require('../scripts/initGraphs').addGraph(props,props.replace(/ /g,""));
       graphs = graphObject.graphs;
       table = graphObject.table;
     }
 
     let button = document.createElement("button");
-    button.id = props;
+    button.id = props.replace(/ /g,"");
     button.innerHTML = props;
     button.className   = "btn btn-success paddingClass";
     button.onclick = eventMethod;  //require('../scripts/initGraphs').addGraph;
@@ -104,15 +104,15 @@ ipc.on('saved-file', function (event, file) {
 function onSelectizeChange(value) {
   if(value === null){
     employeeIdDimension.filterAll();
-    table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',null);
+    table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',null);
   }
   else{
-    table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',[value]);
+    table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',[value]);
   }
 }
 
 $('#resetSearchBar').click(function (e) {
   selectize.clear(true);
   employeeIdDimension.filterAll();
-  table = crossFilterClass.initializeTable('table',employeeIdDimension,['Name','University','totalExp','Location'],'Name',null);
+  table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',null);
 });

@@ -4,6 +4,7 @@
 
 const ipc = require('electron').ipcRenderer;
 const csvParser = require('csvtojson');
+const normalizer = require('../normalizers/skillMatricsNormalizer');
 
 const selectDirBtn = document.getElementById('fileClicker');
 const propsToSkip = ['Name','dob','Email','EmployeeID','Location',
@@ -17,13 +18,18 @@ ipc.on('selected-directory', function (event, path) {
   csvParser()
     .fromFile(path[0])
     .on('json',(jsonObj)=>{
-      for(let prop in jsonObj){
-        if(jsonObj.hasOwnProperty(prop))
-          if(!propsToSkip.includes(prop))
-            if(jsonObj[prop] === "" || !skillSetLevels.includes(jsonObj[prop]))
-              jsonObj[prop] = "None"
+      console.log('jsonObj',jsonObj);
+      let normalizeJsonObj = normalizer.skillMatricsNormalizer(jsonObj);
+      console.log('normalizeJsonObj',normalizeJsonObj);
+      for(let prop in normalizeJsonObj){
+        if(normalizeJsonObj.hasOwnProperty(prop))
+          if(!propsToSkip.includes(prop)){
+            if(normalizeJsonObj[prop] === "" || !skillSetLevels.includes(normalizeJsonObj[prop])){
+              normalizeJsonObj[prop] = "None"
+            }
+          }
       }
-      data.push(jsonObj);
+      data.push(normalizeJsonObj);
     })
     .on('done',async (error)=>{
       if(!error){
