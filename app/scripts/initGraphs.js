@@ -110,6 +110,7 @@ const CreateGraph = (key,id) =>{
   graphs[id].width(400)
     .height(380)
     .x(d3.scale.ordinal())
+    .y(d3.scale.linear().domain([0,ndx.size()]))
     .xUnits(dc.units.ordinal)
     .brushOn(false)
     .xAxisLabel('skill Level')
@@ -121,9 +122,7 @@ const CreateGraph = (key,id) =>{
   graphs[id].render();
 
   let dynamicColumns = table.columns();
-  console.log('dynamicColumns',dynamicColumns);
-  dynamicColumns.push(key);
-  console.log('dynamicColumns after',dynamicColumns);
+  if(!dynamicColumns.includes(key)) dynamicColumns.push(key);
   table
     .dimension(dimensions[id])
     .group(function(d) {
@@ -144,5 +143,5 @@ module.exports = {
   initializeCrossFilter,
   initializeDimension,
   initializePieChart,
-  initializeTable
+  initializeTable,
 };
