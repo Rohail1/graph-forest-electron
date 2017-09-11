@@ -20,8 +20,11 @@ let table;
 let graphs;
 let $select;
 let selectize;
+let tableFilterValues = [];
+let totalSkills = [];
 
 const propsToRemove  = ['Name','dob','Email','University','graduationYear','totalExp','totalVdExp','Timestamp','OtherTools','EmployeeID','Major'];
+let basicColumns = ['Name','University','totalExp','Location']
 
 homeBtn.addEventListener('click', function (event) {
   graphData = totalExpChart = vdExpChart = employeeIdDimension = table = graphs = $select = selectize = null;
@@ -45,7 +48,7 @@ ipc.on('graphData', function (event,data) {
     .filter(function (element) {
       return !propsToRemove.includes(element)
     }).forEach(props =>{
-
+    totalSkills.push(props.replace(/ /g,""));
     function eventMethod () {
       let graphObject = require('../scripts/initGraphs').addGraph(props,props.replace(/ /g,""));
       graphs = graphObject.graphs;
@@ -107,12 +110,20 @@ function onSelectizeChange(value) {
     table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',null);
   }
   else{
+    tableFilterValues = value
     table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',[value]);
   }
 }
 
 $('#resetSearchBar').click(function (e) {
   selectize.clear(true);
+  tableFilterValues = [];
   employeeIdDimension.filterAll();
   table = crossFilterClass.initializeTable('table',employeeIdDimension,table.columns(),'Name',null);
+});
+
+$('#allSkills').click(function (e) {
+  let tempColumns = basicColumns;
+  tempColumns.push.apply(tempColumns, totalSkills);
+  table = crossFilterClass.initializeTable('table',employeeIdDimension,tempColumns,'Name',[tableFilterValues]);
 });
